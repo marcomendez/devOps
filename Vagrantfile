@@ -2,21 +2,26 @@ require 'vagrant-openstack-provider'
 
 Vagrant.configure('2') do |config|
 
- config.ssh.username = 'ubuntu'
- config.ssh.private_key_path = "C:/devOps/marcokey.pem"
+  #Enable vagrant-env plugin
+  config.env.enable
+  config.ssh.username = 'ubuntu'
+  config.ssh.private_key_path = ENV['OS_KEY_PATH']
+  config.vm.provision "docker"
+	config.vm.provision "docker_compose"
 
- config.vm.provider :openstack do |os, override|
-   os.identity_api_version = '3'
-   os.openstack_auth_url = 'http://10.28.3.240:5000/v3'
-   os.username           = 'marcomendez'
-   os.password           = '123456789mm*'
-   os.domain_name        = 'fundacion-jala'
-   os.tenant_name        = '140fa32869254ac08dc6e6a79d2d1s1c2'
-   os.project_name       = 'fj_marcomendez_at05-desktop'
-   os.server_name        = 'mioMarcoUnbut'
-   os.flavor             = 'f2.desktop.tiny'
-   os.image              = 'ubuntu-16.04-amd64-server_12012018'
-   os.keypair_name       = 'marcokey'
-   override.vm.synced_folder '.', '/vagrant', disabled: true
- end
+  config.vm.provider :openstack do |os, override|
+    os.identity_api_version = ENV['OS_IDENTITY_API_VERSION']
+    os.openstack_auth_url = ENV['OS_AUTH_URL']
+    os.domain_name        = ENV['OS_DOMAIN_NAME']
+    os.username           = ENV['OS_USERNAME']
+    os.password           = ENV['OS_PASSWORD']
+    os.tenant_name        = ENV['OS_TENANT_NAME']
+    os.project_name       = ENV['OS_PROJECT_NAME']
+    os.keypair_name       = ENV['OS_KEY_PAIR_NAME']
+    os.region             = ENV['OS_REGION_NAME']
+    os.flavor             = ENV['OS_FLAVOR']
+    os.image              = ENV['OS_IMAGE']
+    os.server_name        = ENV['OS_SERVER_NAME']
+    override.vm.synced_folder '.', '/vagrant', disabled: true
+  end
 end
