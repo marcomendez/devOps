@@ -1,8 +1,4 @@
 build/*
-
 .idea/*
-
 .gradle/*
-
 *.iml
-out/*
