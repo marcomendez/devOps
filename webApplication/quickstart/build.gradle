@@ -9,6 +9,7 @@ buildscript {
 apply plugin: 'org.akhikhl.gretty'
 
 apply plugin: 'war'
+apply plugin: "org.sonarqube"
 
 repositories {
     jcenter()
@@ -19,6 +20,33 @@ dependencies {
     compile group: 'log4j', name: 'log4j', version: '1.2.15', ext: 'jar'
     compile group: 'junit', name: 'junit', version: '4.12'
 }
+
+
+
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+sonarqube {
+    properties {
+        property "sonar.projectName", "TechZone Rest API"
+        property "sonar.projectKey", "tz:rest-api"
+    }
+}
+
+
+
+
+
+
 
 gretty {
     httpPort = 8080
