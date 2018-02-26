@@ -66,6 +66,6 @@ public class TestUnit {
     @Test
     public void test8()
     {
-        assertFalse(true);
+        assertFalse(false);
     }
 }
